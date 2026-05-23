@@ -66,7 +66,7 @@ body {
 @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(50px,-40px) scale(1.08); } }
 .noise {
   position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOcta[...]
   background-size: 200px; opacity: 0.35;
 }
 .grid {
@@ -126,7 +126,10 @@ nav {
   transition: all var(--tr);
 }
 .nl:hover, .nl.active { color: #fff; background: rgba(255,255,255,0.06); }
-.nav-right { display: flex; align-items: center; gap: 10px; }
+.nav-right { 
+  display: flex; align-items: center; gap: 10px; 
+  flex-shrink: 0;
+}
 .zpoints-pill {
   display: flex; align-items: center; gap: 6px;
   background: rgba(99,102,241,0.12);
@@ -134,24 +137,33 @@ nav {
   color: #a5b4fc; padding: 6px 14px;
   border-radius: 100px; font-size: 13px; font-weight: 700;
   cursor: default; transition: all var(--tr);
+  white-space: nowrap;
 }
-.zpoints-pill svg { width: 14px; height: 14px; }
+.zpoints-pill svg { width: 14px; height: 14px; flex-shrink: 0; }
 .zpoints-pill:hover { background: rgba(99,102,241,0.2); }
 .hamburger {
   display: none; background: none; border: none;
   color: var(--text); cursor: pointer; padding: 6px;
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-xs); flex-shrink: 0;
+  transition: background var(--tr);
 }
+.hamburger:hover { background: rgba(255,255,255,0.05); }
 .hamburger svg { width: 22px; height: 22px; }
 .mob-menu {
   display: none; flex-direction: column;
-  background: rgba(6,6,15,0.96);
+  background: rgba(6,6,15,0.98);
   border-bottom: 1px solid var(--card-border);
-  padding: 0.5rem 1rem 0.75rem;
+  padding: 0.75rem 1rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
 }
-.mob-menu.open { display: flex; }
+.mob-menu.open { 
+  display: flex; 
+  max-height: 500px;
+}
 .mob-menu a {
-  padding: 11px 14px; text-decoration: none;
+  padding: 12px 14px; text-decoration: none;
   color: var(--text2); font-size: 15px; font-weight: 500;
   border-radius: var(--radius-xs); transition: all var(--tr);
 }
@@ -705,14 +717,17 @@ nav {
   .subjects-grid { grid-template-columns: repeat(3, 1fr); }
   .earn-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .hamburger { display: flex; }
+  .zpoints-pill { font-size: 12px; padding: 5px 12px; }
 
   .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
   .hero-p { margin: 0 auto 2rem; }
   .hero-ctas { justify-content: center; }
-  .hero-counters { justify-content: center; }
+  .hero-counters { justify-content: center; flex-direction: column; gap: 1.5rem; }
+  .hc-div { display: none; }
   .hero-right { display: none; }
 
   .dl-input-row { flex-direction: column; }
@@ -728,13 +743,27 @@ nav {
   .subjects-grid { grid-template-columns: repeat(2, 1fr); }
 
   .steps-row .step-arrow { display: none; }
+  .steps-row { gap: 0.75rem; }
 
   .section { padding: 3.5rem 1rem; }
   .s-head h2 { font-size: 1.8rem; }
 }
+
 @media (max-width: 480px) {
+  .nav-container { height: auto; padding: 0.75rem 1rem; }
+  .brand { font-size: 18px; }
+  .brand-logo { width: 30px; height: 30px; font-size: 16px; }
+  
   .store-grid { grid-template-columns: 1fr; }
   .subjects-grid { grid-template-columns: 1fr 1fr; }
   .hero h1 { font-size: 2.2rem; }
   .dl-card { padding: 1.25rem; }
+  
+  .pts-dashboard { padding: 1.5rem; }
+  .pts-balance { font-size: 2.2rem; }
+  .pts-actions-row { flex-direction: column; }
+  .pts-actions-row .btn-primary.sm, 
+  .pts-actions-row .btn-ghost.sm { width: 100%; }
+  
+  .modal { padding: 1.5rem; }
 }
